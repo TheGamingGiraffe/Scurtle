@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Unscramble</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .word-unscramble {
+            margin-top: 50px;
+        }
+        .scrambled-word {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .guess-input {
+            width: 200px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .submit-button {
+            margin-top: 10px;
+        }
+        .feedback {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Word Unscramble</h1>
+    <div class="word-unscramble">
+        <p>Unscramble the word:</p>
+        <p class="scrambled-word"></p>
+        <input type="text" class="guess-input" maxlength="10" placeholder="Your guess">
+        <button class="submit-button">Submit</button>
+        <p class="feedback"></p>
+    </div>
+
+    <script>
+        // List of words to unscramble
+        const words = ["HELLO", "WORLD", "APPLE", "BANANA", "ORANGE"];
+
+        // Function to select a random word from the list
+        function getRandomWord() {
+            return words[Math.floor(Math.random() * words.length)];
+        }
+
+        // Function to scramble a word
+        function scrambleWord(word) {
+            return word.split('').sort(function(){return 0.5-Math.random()}).join('');
+        }
+
+        // Initialize game
+        let currentWord = getRandomWord();
+        const scrambledWord = scrambleWord(currentWord);
+        document.querySelector('.scrambled-word').textContent = scrambledWord;
+
+        // Event listener for form submission (guess)
+        document.querySelector('.submit-button').addEventListener('click', function() {
+            const guessInput = document.querySelector('.guess-input');
+            const guess = guessInput.value.toUpperCase();
+            const feedbackElement = document.querySelector('.feedback');
+            if (guess === currentWord) {
+                feedbackElement.style.color = 'green';
+                feedbackElement.textContent = 'Correct! Well done.';
+                // Reset game for the next round
+                currentWord = getRandomWord();
+                const newScrambledWord = scrambleWord(currentWord);
+                document.querySelector('.scrambled-word').textContent = newScrambledWord;
+            } else {
+                feedbackElement.style.color = 'red';
+                feedbackElement.textContent = 'Incorrect. Try again.';
+            }
+            guessInput.value = '';
+        });
+    </script>
+</body>
+</html>
